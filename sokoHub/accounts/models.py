@@ -1,8 +1,8 @@
 from django.db import models
 
 # Create your models here.
-class CustomUser(models.Models):
-    user_type = models.TextField(choices=['vendor', 'customer'])
+class CustomUser(models.Model):
+    user_type = models.TextField(choices=[('vendor', 'Vendor'), ('customer', 'Customer')])
     phone = models.TextField()
     location = models.TextField()
     def __str__(self):

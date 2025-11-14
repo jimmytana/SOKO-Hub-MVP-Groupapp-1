@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        .container{
+            display: flex;
+            position: fixed;
+            width: 100%;flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-group{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin: 10px 10px;
+        }
+        input{
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to SokoHub</h1>
+        <div class="box">
+            <form action="">
+                <div class="input-group">
+                    <label for="">Email</label>
+                <input type="email" placeholder="Email" required>
+                </div>
+                <div class="input-group">
+                    <label for="">Password</label>
+                <input type="text" min="8" placeholder="Password" required>
+                </div>
+                <div class="input-group">
+                    <label for="">User Type</label>
+                <select name="" id="">
+                    <option value="">Which user are you?</option>
+                    <option value="">Vendor</option>
+                    <option value="">Customer</option>
+                </select>
+                </div>
+              <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

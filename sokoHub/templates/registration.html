@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+
+    {% block content %}
+
+    
+
+    <div class="container">
+        <h1>Welcome to SokoHub</h1>
+        <div class="box">
+            <form action="">
+              <div class="left">
+                <div class="input-group">
+                    <label for="">Username*</label>
+                <input type="text" placeholder="Username" required class="form-control">
+                </div>
+                <div class="input-group">
+                    <label for="">Email</label>
+                <input type="email" placeholder="Email" required class="form-control">
+                </div>
+                <div class="input-group">
+                    <label for="">Password</label>
+                <input type="text" min="8" placeholder="Password" required class="form-control">
+                </div>
+                <div class="input-group">
+                    <label for="">Confirm password</label>
+                <input type="text" placeholder="Confirm password" required class="form-control">
+                </div>
+              </div>
+               <div class="right">
+                <div class="input-group">
+                    <label for="">User Type</label>
+                <select name="" id="">
+                    <option value="">Which user are you?</option>
+                    <option value="">Vendor</option>
+                    <option value="">Customer</option>
+                </select>
+                </div>
+                <div class="input-group">
+                    <label for="">Phone</label>
+                    <input type="tel" name="" placeholder="Phone"  id="" required class="form-control">
+                </div>
+                <div class="input-group">
+                    <label for="">Location</label>
+                    <input type="tel" name="" placeholder="Location"  id="" required class="form-control">
+                </div>
+                <button type="submit" class="form-control"> Register </button>
+               </div>
+            </form>
+        </div>
+    </div>
+    {% endblock %}

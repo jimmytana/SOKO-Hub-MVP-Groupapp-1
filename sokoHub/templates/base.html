@@ -5,8 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <title> SokoHub </title>
+    <style>
+        .container{
+            display: flex;
+            position: fixed;
+            width: 100%;flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .input-group{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin: 10px 10px;
+        }
+        input{
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    
+    Here we are 
+    {% block content %}
+
+    {% endblock %}
 </body>
 </html>

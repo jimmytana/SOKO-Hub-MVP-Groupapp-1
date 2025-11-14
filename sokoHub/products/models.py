@@ -7,7 +7,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.IntegerField()
     stock = models.IntegerField()
-    image = models.ImageField(_(""), upload_to='/', height_field=None, width_field=None, max_length=None)
+    image = models.ImageField(upload_to='')
     status = models.TextField()
     created_at = models.TimeField()
     
