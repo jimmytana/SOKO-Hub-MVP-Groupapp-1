@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 class order(models.Model):
-    customer=models.Foreignkey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    customer=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     total=models.DecimalFields()
     status=models.charFields()
     delivery_adress=models.charFields(max_length=200)
