@@ -5,23 +5,17 @@
     <div class="container">
         <h1>Welcome to SokoHub</h1>
         <div class="box">
-            <form action="">
+            <form action="accounts/login" method="POST">
+                {% csrf_token %}
                 <div class="input-group">
-                    <label for="">Email</label>
-                <input type="email" placeholder="Email" required class="form-control">
+                    <label for="">username</label>
+                <input type="text" placeholder="username" name="username"  required class="form-control">
                 </div>
                 <div class="input-group">
                     <label for="">Password</label>
-                <input type="text" min="8" placeholder="Password" required class="form-control">
+                <input type="text" min="8" placeholder="Password" name="password" required class="form-control">
                 </div>
-                <div class="input-group">
-                    <label for="">User Type</label>
-                <select name="" id="" class="form-control">
-                    <option value="">Which user are you?</option>
-                    <option value="">Vendor</option>
-                    <option value="">Customer</option>
-                </select>
-                </div>
+            
                 <div><input type="checkbox" name="" id=""> Remember me</div>
 
                 

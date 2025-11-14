@@ -1,10 +1,14 @@
-
-<h1>Registered users</h1>
 {% extends 'base.html' %}
-   <ul>
+
+{% block content %}
+<h1>Registered Users</h1>
+
+<ul>
     {% for user in users %}
-    <li>{{ user.username }}</li>
+        <li>{{ user.user.username }}</li>  <!--customUser has user object in it-->
     {% empty %}
-    <li>No user was found</li>
+        <li>No user was found</li>
     {% endfor %}
-   </ul>
+</ul>
+
+{% endblock %}
