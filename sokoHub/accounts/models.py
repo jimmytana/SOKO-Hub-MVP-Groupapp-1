@@ -7,4 +7,3 @@ class CustomUser(models.Model):
     location = models.TextField()
     def __str__(self):
         return (f"type: {self.user_type}\n phone: {self.phone}\nlocation: {self.location}")
-    
