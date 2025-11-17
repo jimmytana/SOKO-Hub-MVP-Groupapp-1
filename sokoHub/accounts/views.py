@@ -12,15 +12,21 @@ def vendor_required(function):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponse("None")
-        return wrapper(request, *args, **kwargs)
-    
-@vendor_required
-def admin(request):
+        return function(request, *args, **kwargs)
+    return wrapper
+
+def customer_required(function):
+    @wraps(function)
+    def wrapper(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return render(request, 'login.html', context={'error': "Please login to continue"})
+    return wrapper
+
+def vendor_view(request):
     return HttpResponse("This one is protected")
 
 def register(request):
     if request.method == 'POST':
-
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
         email = request.POST.get('email', '').strip()
@@ -46,10 +52,12 @@ def register(request):
             phone=phone,
             location=location
         )
-
-        return HttpResponse("User created successfully!")
+        login(request, user)
+        return redirect('homepage')
     return render(request, 'registration.html')
 def Login(request):
+    print("trying to loggin")
+    print(request)
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -59,7 +67,7 @@ def Login(request):
             login(request, user)
             return redirect("homepage")
         else:
-            return HttpResponse("Wapi iyo password ntago ariyo")
+            return render(request, 'login.html', context = { "error" : "Incorrect password or username"})
     else:
         return render(request, 'login.html')
 
@@ -77,3 +85,28 @@ def logout_view(request):
     return redirect('login')
     return HttpResponse("<h1>We are sad to see you leaving</h1>")
 
+
+# @vendor_required
+def Vendor_dashboard(request):
+    return render(request, 'VendorDashboard.html')
+
+# @customer_required
+def Customer_dashboard(request):
+    return render(request, 'CustomerDashboard.html')
+
+def get_user_type(user):
+    try:
+        custom_user = CustomUser.objects.get(user=user)
+        return custom_user.user_type
+    except CustomUser.DoesNotExist:
+        return None
+
+
+def dashboard(request):
+    if(request.user.is_authenticated):
+        if(get_user_type(request.user) == "vendor"):
+            return Vendor_dashboard(request)
+        else:
+            return Customer_dashboard(request)
+    else:
+        return Login(request)
