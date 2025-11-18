@@ -9,5 +9,5 @@ urlpatterns = [
     path('users', ViewAllUsers),
     path('home', homepage, name='homepage'),
     path('logout', logout_view, name='logout'),
-    path('dashboard', dashboard, name='dashboard')
+    path('dashboard', dashboard, name='dashboard'),
 ]

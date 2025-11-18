@@ -20,6 +20,7 @@ def customer_required(function):
     def wrapper(request, *args, **kwargs):
         if not request.user.is_authenticated:
             return render(request, 'login.html', context={'error': "Please login to continue"})
+        return function(request, *args, **kwargs)
     return wrapper
 
 def vendor_view(request):
@@ -77,6 +78,7 @@ def ViewAllUsers(request):
 def notFound(request):
     return render(request, '404.html')
 
+@customer_required
 @login_required(login_url='login')
 def homepage(request):
     return render(request, 'HomePage.html')
@@ -86,13 +88,15 @@ def logout_view(request):
     return HttpResponse("<h1>We are sad to see you leaving</h1>")
 
 
-# @vendor_required
+@vendor_required
 def Vendor_dashboard(request):
-    return render(request, 'VendorDashboard.html')
+    print("The request has: ", request)
+    return render(request, 'VendorDashboard.html', context={'user_type': 'vendor'})
 
-# @customer_required
+@customer_required
 def Customer_dashboard(request):
-    return render(request, 'CustomerDashboard.html')
+    print("The request has: ", request)
+    return render(request, 'CustomerDashboard.html', context={'user_type': 'customer'})
 
 def get_user_type(user):
     try:
