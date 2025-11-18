@@ -5,48 +5,50 @@
 
     
 
-    <div class="container">
-        <h1>Welcome to SokoHub</h1>
-        <div class="box">
-            <form action="">
-              <div class="left">
-                <div class="input-group">
-                    <label for="">Username*</label>
-                <input type="text" placeholder="Username" required class="form-control">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-sm rounded-3">
+                <div class="card-body p-4 p-md-5">
+                    <h1 class="card-title text-center mb-4">Create an Account</h1>
+                    <form action="{% url 'register' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username*</label>
+                            <input type="text" id="username" name="username" placeholder="Username" required class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Email" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password*</label>
+                            <input type="password" id="password" name="password" min="8" placeholder="Password" required class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user_type" class="form-label">I am a...*</label>
+                            <select name="user_type" id="user_type" class="form-select" required>
+                                <option value="" disabled selected>Choose your account type</option>
+                                <option value="customer">Customer</option>
+                                <option value="vendor">Vendor</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Phone" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" id="location" name="location" placeholder="Location" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'login' %}">Already have an account? Login</a>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label for="">Email</label>
-                <input type="email" placeholder="Email" required class="form-control">
-                </div>
-                <div class="input-group">
-                    <label for="">Password</label>
-                <input type="text" min="8" placeholder="Password" required class="form-control">
-                </div>
-                <div class="input-group">
-                    <label for="">Confirm password</label>
-                <input type="text" placeholder="Confirm password" required class="form-control">
-                </div>
-              </div>
-               <div class="right">
-                <div class="input-group">
-                    <label for="">User Type</label>
-                <select name="" id="">
-                    <option value="">Which user are you?</option>
-                    <option value="">Vendor</option>
-                    <option value="">Customer</option>
-                </select>
-                </div>
-                <div class="input-group">
-                    <label for="">Phone</label>
-                    <input type="tel" name="" placeholder="Phone"  id="" required class="form-control">
-                </div>
-                <div class="input-group">
-                    <label for="">Location</label>
-                    <input type="tel" name="" placeholder="Location"  id="" required class="form-control">
-                </div>
-                <button type="submit" class="form-control"> Register </button>
-               </div>
-            </form>
+            </div>
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}

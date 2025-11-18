@@ -10,4 +10,3 @@ class Product(models.Model):
     image = models.ImageField(upload_to='')
     status = models.TextField()
     created_at = models.TimeField()
-    

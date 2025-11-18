@@ -1,54 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
-    <style>
-        .container{
-            display: flex;
-            position: fixed;
-            width: 100%;flex-direction: column;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-        }
-        .input-group{
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin: 10px 10px;
-        }
-        input{
-            padding: 5px;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to SokoHub</h1>
-        <div class="box">
-            <form action="">
-                <div class="input-group">
-                    <label for="">Email</label>
-                <input type="email" placeholder="Email" required>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card shadow-sm rounded-3">
+            <div class="card-body p-4 p-md-5">
+                <h1 class="card-title text-center mb-4">Welcome to SokoHub</h1>
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" placeholder="username" name="username" required class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" placeholder="Password" name="password" required class="form-control">
+                    </div>
+                    {% if error %}
+                    <div class="alert alert-danger py-2">{{ error }}</div>
+                    {% endif %}
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" id="rememberMe">
+                        <label class="form-check-label" for="rememberMe">Remember me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+                <div class="text-center mt-3">
+                    <a href="{% url 'register' %}">Don't have an account? Register</a>
                 </div>
-                <div class="input-group">
-                    <label for="">Password</label>
-                <input type="text" min="8" placeholder="Password" required>
-                </div>
-                <div class="input-group">
-                    <label for="">User Type</label>
-                <select name="" id="">
-                    <option value="">Which user are you?</option>
-                    <option value="">Vendor</option>
-                    <option value="">Customer</option>
-                </select>
-                </div>
-              <button type="submit">Login</button>
-            </form>
+            </div>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
