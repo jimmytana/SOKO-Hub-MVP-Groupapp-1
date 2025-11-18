@@ -11,6 +11,9 @@ def getUserType(request):
     print(request.user.customuser)
     return HttpResponse("User:", request.user.customuser)
 
+def productList(request):
+    return render(request, 'customer/product_list.html')
+
 def vendor_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
@@ -22,7 +25,8 @@ def vendor_required(function):
 def customer_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated or get_user_type(request.user) != "customer":
+        print(request.user.customuser)
+        if not request.user.is_authenticated or request.user.customuser.user_type != "customer":
             return redirect(request.META.get('HTTP_REFERER', 'homepage'))
         return function(request, *args, **kwargs)
     return wrapper
@@ -83,25 +87,37 @@ def ViewAllUsers(request):
 def notFound(request):
     return render(request, '404.html')
 
+@vendor_required
+@login_required(login_url='login')
+def vendorHomepage(request):
+    return render(request, 'vendor/homepage.html', context={'user_type': 'vendor'})
+
 @customer_required
 @login_required(login_url='login')
+def customerHomepage(request):
+    return render(request, 'customer/homepage.html', context={'user_type': 'customer'})
+
 def homepage(request):
-    return render(request, 'HomePage.html', context={'user_type': 'customer'})
+    if request.user.customuser.user_type == 'vendor':
+        return vendorHomepage(request)
+    else:
+        return customerHomepage(request)
+
 def logout_view(request):
     logout(request)
     return redirect('login')
-    return HttpResponse("<h1>We are sad to see you leaving</h1>")
-
 
 @vendor_required
+@login_required
 def Vendor_dashboard(request):
     print("The request has: ", request)
-    return render(request, 'VendorDashboard.html', context={'user_type': 'vendor'})
+    return render(request, 'vendor/dashboard.html', context={'user_type': 'vendor'})
 
 @customer_required
+@login_required
 def Customer_dashboard(request):
     print("The request has: ", request)
-    return render(request, 'CustomerDashboard.html', context={'user_type': 'customer'})
+    return render(request, 'customer/dashboard.html', context={'user_type': 'customer'})
 
 def get_user_type(user):
     try:
@@ -109,10 +125,8 @@ def get_user_type(user):
         return custom_user.user_type
     except CustomUser.DoesNotExist:
         return None
-
-
 def dashboard(request):
-    getUserType(request)
+    print("request be like: ", request.user.customuser.user_type)
     if(request.user.is_authenticated):
         if(request.user.customuser.user_type == "vendor"):
             return Vendor_dashboard(request)

@@ -41,10 +41,9 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'homepage' %}active{% endif %}" href="{% url 'homepage' %}">Home</a>
                     </li>
-                    
-                    {% if user.user_type == 'customer'%}
+                    {% if not user.is_authenticated or user_type == 'customer'%}
                     <li class="nav-item">
-                        <a class="nav-link {% if request.resolver_match.url_name == 'products' %}active{% endif %}" href="{% url 'allProducts' %}">Products</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'allProducts' %}active{% endif %}" href="{% url 'allProducts' %}">Products</a>
                     </li>
                     {% endif %}
 
@@ -58,7 +57,7 @@
                     </li>
                     {% else %}
                      <li class="nav-item">
-                        <a class="nav-link" href="{% url 'dashboard' %}">My Products</a>
+                        <a class="nav-link {% if request.resolver_match.url_name == 'allProducts' %}active {% endif %}"  href="{% url 'allProducts' %}">My Products</a>
                     </li>
                      <li class="nav-item">
                         <a class="nav-link" href="{% url 'dashboard' %}">Orders</a>
