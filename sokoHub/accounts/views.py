@@ -14,16 +14,16 @@ def getUserType(request):
 def vendor_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.customuser.user_type != "vendor":
-            return HttpResponse("None")
+        if not request.user.is_authenticated or get_user_type(request.user) != "vendor":
+            return redirect(request.META.get('HTTP_REFERER', 'homepage'))
         return function(request, *args, **kwargs)
     return wrapper
 
 def customer_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.customuser.type != "customer":
-            return render(request, 'login.html', context={'error': "Please login to continue"})
+        if not request.user.is_authenticated or get_user_type(request.user) != "customer":
+            return redirect(request.META.get('HTTP_REFERER', 'homepage'))
         return function(request, *args, **kwargs)
     return wrapper
 
@@ -76,16 +76,17 @@ def Login(request):
     else:
         return render(request, 'login.html')
 
+
 def ViewAllUsers(request):
     users = CustomUser.objects.all()
     return render(request, 'allUsers.html', {'users':users})
 def notFound(request):
     return render(request, '404.html')
 
-# @customer_required
+@customer_required
 @login_required(login_url='login')
 def homepage(request):
-    return render(request, 'HomePage.html')
+    return render(request, 'HomePage.html', context={'user_type': 'customer'})
 def logout_view(request):
     logout(request)
     return redirect('login')

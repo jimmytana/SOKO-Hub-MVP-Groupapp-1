@@ -41,9 +41,13 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'homepage' %}active{% endif %}" href="{% url 'homepage' %}">Home</a>
                     </li>
+                    
+                    {% if user.user_type == 'customer'%}
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'products' %}active{% endif %}" href="{% url 'allProducts' %}">Products</a>
                     </li>
+                    {% endif %}
+
                     {% if user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">Dashboard</a>
