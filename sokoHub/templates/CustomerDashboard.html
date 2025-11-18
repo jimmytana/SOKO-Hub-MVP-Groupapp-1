@@ -1,7 +1,78 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block content%}
+{% block content %}
+<div class="container py-4">
 
-<h1>This is Customer dashboard</h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color: var(--bs-primary);">Customer Dashboard</h2>
+        <!-- <a href="{% url 'addProduct' %}" class="btn btn-lg text-white" style="background-color: var(--bs-secondary);">
+            Add New Product
+        </a> -->
+    </div>
 
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-primary);">
+                <div class="card-body">
+                    <h6 class="text-muted">Total Products</h6>
+                    <h3 class="fw-bold">{{ total_products }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-secondary);">
+                <div class="card-body">
+                    <h6 class="text-muted">Active Products</h6>
+                    <h3 class="fw-bold">{{ active_products }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-dark);">
+                <div class="card-body">
+                    <h6 class="text-muted">Out of Stock</h6>
+                    <h3 class="fw-bold">{{ out_of_stock_products }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-primary);">
+                <div class="card-body">
+                    <h6 class="text-muted">Pending Orders</h6>
+                    <h3 class="fw-bold">{{ pending_orders }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-semibold" style="color: var(--bs-dark);">Recent Products</h4>
+        <div>
+            <a href="#" class="btn btn-outline-dark me-2">View All Products</a>
+            <a href="#" class="btn btn-outline-dark">View Orders</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for product in recent_products %}
+        <div class="col-md-4 col-lg-3">
+            <div class="card h-100 shadow-sm" style="background-color: var(--bs-light);">
+                {% if product.image %}
+                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">{{ product.name }}</h5>
+                    <p class="card-text text-muted small">{{ product.description|truncatewords:15 }}</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="#" class="btn btn-sm text-white w-100" style="background-color: var(--bs-primary);">Edit</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No products available.</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

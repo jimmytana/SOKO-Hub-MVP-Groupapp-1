@@ -7,4 +7,4 @@ class CustomUser(models.Model):
     phone = models.TextField()
     location = models.TextField()
     def __str__(self):
-        return (f"type: {self.user_type}\n phone: {self.phone}\nlocation: {self.location}")
+        return (f"type: {self.user_type}, phone: {self.phone},location: {self.location}")

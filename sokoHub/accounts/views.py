@@ -3,14 +3,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.http import response
 from functools import wraps
 from django.http import HttpResponse
 # Create your views here.
+
+def getUserType(request):
+    print(request.user.customuser)
+    return HttpResponse("User:", request.user.customuser)
+
 def vendor_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated or request.user.customuser.user_type != "vendor":
             return HttpResponse("None")
         return function(request, *args, **kwargs)
     return wrapper
@@ -18,7 +22,7 @@ def vendor_required(function):
 def customer_required(function):
     @wraps(function)
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated or request.user.customuser.type != "customer":
             return render(request, 'login.html', context={'error': "Please login to continue"})
         return function(request, *args, **kwargs)
     return wrapper
@@ -53,7 +57,7 @@ def register(request):
             phone=phone,
             location=location
         )
-        login(request, user)
+        Login(request)
         return redirect('homepage')
     return render(request, 'registration.html')
 def Login(request):
@@ -78,7 +82,7 @@ def ViewAllUsers(request):
 def notFound(request):
     return render(request, '404.html')
 
-@customer_required
+# @customer_required
 @login_required(login_url='login')
 def homepage(request):
     return render(request, 'HomePage.html')
@@ -107,8 +111,9 @@ def get_user_type(user):
 
 
 def dashboard(request):
+    getUserType(request)
     if(request.user.is_authenticated):
-        if(get_user_type(request.user) == "vendor"):
+        if(request.user.customuser.user_type == "vendor"):
             return Vendor_dashboard(request)
         else:
             return Customer_dashboard(request)
