@@ -8,6 +8,6 @@ class Product(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
-    image = models.ImageField(upload_to='product_images/')
+    image = models.ImageField(upload_to='product_images/%Y/%m/%d/')
     status = models.CharField(max_length=50, default='available')
     created_at = models.DateTimeField(default=timezone.now)

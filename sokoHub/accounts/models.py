@@ -1,8 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 # Create your models here.
-class CustomUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class CustomUser(AbstractUser):
     user_type = models.TextField(choices=[('vendor', 'Vendor'), ('customer', 'Customer')])
     phone = models.TextField()
     location = models.TextField()

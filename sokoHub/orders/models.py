@@ -4,10 +4,10 @@ from products.models import Product
 class Order (models.Model):
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     total = models.IntegerField()
-    status = models.TextField()
+    status = models.TextField(choices=[('pending', 'Pending'), ('delivered', 'Delivered'), ('cancelled', 'Cancelled')])
     delivery_address = models.TextField()
     phone = models.TextField()
-    created_at = models.TimeField( auto_now=False, auto_now_add=False)
+    created_at = models.DateTimeField( auto_now_add=True)
     def __str__(self):
         return (f"Customer: {self.customer}\nTotal: {self.total}\ndelivery address:{self.delivery_address}")
 

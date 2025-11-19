@@ -96,7 +96,7 @@
             <div class="row product-grid g-4">
                 {% for product in page_obj.object_list %}
                     <div class="col-12 col-sm-6 col-lg-4">
-                        <a href="{% url 'getProduct' %}" class="text-decoration-none text-dark">
+                        <a href="{% url 'getProduct' product.pk %}" class="text-decoration-none text-dark">
                             <div class="card h-100 product-card shadow-sm position-relative 
                                 {% if product.stock_quantity <= 0 %}out-of-stock-card{% endif %}">
                                 {% if product.stock_quantity <= 0 %}
@@ -117,7 +117,7 @@
                                     </h5>
                                     
                                     <p class="card-text text-muted small mb-2">
-                                        Vendor: <span class="fw-semibold">{{ product.vendor_name }}</span>
+                                        Vendor: <span class="fw-semibold">{{ product.vendor.username }}</span>
                                     </p>
                                     <p class="card-text fw-bold fs-5 mt-auto mb-2" style="color: var(--bs-secondary);">
                                         ${{ product.price|floatformat:2 }}

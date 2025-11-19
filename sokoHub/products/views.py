@@ -6,21 +6,21 @@ from accounts.views import vendor_required, customer_required
 @vendor_required # This decorator ensures only vendors can access this view
 def addProduct(request):
     if(request.method == 'GET'):
-        return render(request, 'vendor/add_product.html')
+        return render(request, 'vendor/add_product.html' , {'user_type': 'vendor'})
     elif(request.method == 'POST'):
         name = request.POST.get('name')
         description = request.POST.get('description')
         price = request.POST.get('price')
         stock = request.POST.get('stock')
         image = request.FILES.get('image')
-        vendor = request.user.customuser # The vendor is the currently logged-in user
+        vendor = request.user # The vendor is the currently logged-in user
         Product.objects.create(name=name, description=description, vendor=vendor, price=price, stock=stock, image=image)
-        return redirect('products:vendor_products')
+        return redirect('allProducts')
 
 @vendor_required
 def vendor_products(request):
     # This ensures that vendors only see the products they have created.
-    vendor = request.user.customuser
+    vendor = request.user
     products = Product.objects.filter(vendor=vendor).order_by('-created_at')
     return render(request, 'vendor/product_list.html', {'products': products, 'user_type': 'vendor'})
 
@@ -49,13 +49,12 @@ def allProducts(request):
     if not request.user.is_authenticated:
             return customer_products(request)
     else:
-        if(request.user.customuser.user_type == 'vendor'):
+        if(request.user.user_type == 'vendor'):
             return vendor_products(request)
         else:
             return customer_products(request)
     
-def getProduct(request):
-    print("the product id is :", id)
-    product = get_object_or_404(Product, id=id)
-    context = {'product': product}
+def getProduct(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    context = {'product': product, 'user_type': 'customer'}
     return render(request, 'customer/product_details.html', context)
