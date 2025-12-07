@@ -1,26 +1,20 @@
-from django.db import models
-
-# Create your models here.
-class order(models.Model):
-    customer= models.ForeignKey("accounts.Model", on_delete=models.CASCADE)
-    total=models.DecimalField()
-    status=models.CharField()
-    delivery_adress=models.CharField(max_length=200)
-    phone=models.IntegerField()
-    created_at=models.DateTimeField(auto_now_add=True)
+from django.db import models 
+from accounts.models import CustomUser
+from products.models import Product
+class Order (models.Model):
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    total = models.IntegerField()
+    status = models.TextField(choices=[('pending', 'Pending'), ('delivered', 'Delivered'), ('cancelled', 'Cancelled')])
+    delivery_address = models.TextField()
+    phone = models.TextField()
+    created_at = models.DateTimeField( auto_now_add=True)
     def __str__(self):
-         return f"Order {self.order_number} — {self.customer.username}"
-           
+        return (f"Customer: {self.customer}\nTotal: {self.total}\ndelivery address:{self.delivery_address}")
 
-    
-
-class order_Item(models.Model):
-    order=models.ForeignKey(order,on_delete=models.CASCADE)
-    product=models.ForeignKey(on_delete=models.CASCADE)
-    Quantity=models.DecimalField()
-    price=models.DecimalField()
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    price = models.IntegerField()
     def __str__(self):
-     return f"{self.product} x {self.quantity}"
-
-    
-
+        return (f"Order: {self.order}\nproduct: {self.product}\nprice: {self.price}")
