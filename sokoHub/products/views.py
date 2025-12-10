@@ -58,3 +58,17 @@ def getProduct(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     context = {'product': product, 'user_type': 'customer'}
     return render(request, 'customer/product_details.html', context)
+
+@vendor_required
+def editProduct(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        product.name = request.POST.get('name')
+        product.description = request.POST.get('description')
+        product.price = request.POST.get('price')
+        product.stock = request.POST.get('stock')
+        product.image = request.FILES.get('image')
+        product.save()
+        return redirect('allProducts')
+    else:
+        return render(request, 'vendor/editProduct.html', {'product': product, 'user_type': 'vendor'})
