@@ -51,9 +51,9 @@
 
         <div class="row">
             
-            <div class="col-lg-6 mb-4">
+            <div class="col-lg-6 mb-4" style="max-height: 350px;overflow: hidden;display: flex;justify-content: center; align-items: center;">
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded product-image-large shadow-sm">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="height: 100%" class="img-fluid rounded product-image-large shadow-sm">
                 {% else %}
                     <div class="product-image-placeholder rounded shadow-sm">
                         Large Product Image
@@ -85,9 +85,9 @@
                         </span>
                         {% with is_in_stock=True %} {% endwith %}
                     {% else %}
-                        <span class="badge fs-6 text-bg-danger py-2 px-3">
-                             Out of Stock
-                        </span>
+                        {% comment %} <span class="badge fs-6 text-bg-danger py-2 px-3">
+                             
+                        </span> {% endcomment %}
                         {% with is_in_stock=False %} {% endwith %}
                     {% endif %}
                 </div>

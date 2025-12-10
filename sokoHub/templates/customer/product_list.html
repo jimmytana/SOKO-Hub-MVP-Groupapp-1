@@ -7,6 +7,8 @@
         .product-card {
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid rgba(0, 0, 0, 0.05);
+            max-height: 250px;
+        
         }
         .product-card:hover {
             transform: translateY(-3px);
@@ -86,9 +88,13 @@
                 </ul>
             </div>
             <div>
-                <button class="btn btn-outline-secondary" disabled>
-                    Category Filter (Optional)
-                </button>
+                    <select name="" class="btn btn-outline-secondary form-control" id="">
+                        <option value="">--select category--</option>
+                        <option value="">Electronics</option>
+                        <option value="">Groceries</option>
+                        <option value="">Clothes</option>
+                    </select>
+                
             </div>
         </div>
         <hr>
@@ -97,18 +103,20 @@
                 {% for product in page_obj.object_list %}
                     <div class="col-12 col-sm-6 col-lg-4">
                         <a href="{% url 'getProduct' product.pk %}" class="text-decoration-none text-dark">
-                            <div class="card h-100 product-card shadow-sm position-relative 
+                            <div class="card h-100 product-card shadow-sm position-relative
                                 {% if product.stock_quantity <= 0 %}out-of-stock-card{% endif %}">
                                 {% if product.stock_quantity <= 0 %}
                                     <div class="out-of-stock-overlay rounded-top">
-                                        OUT OF STOCK
+                                        
                                     </div>
                                 {% endif %}
                                 {% if product.image %}
-                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                                    <div class="img-card" style="max-height: 300px;overflow: hidden;display: flex;justify-content: center;align-items: center;">
+                                        <img src="{{ product.image.url }}" style="height: 100%;width: auto" class="card-img-top" alt="{{ product.name }}">
+                                    </div>
                                 {% else %}
-                                    <div class="product-image-placeholder card-img-top">
-                                        No Image
+                                    <div class="img-card" style="max-height: 300px;overflow: hidden;display: flex;justify-content: center;align-items: center;">
+                                        <img src="/media/noimage.webp" style="height: 100%;width: auto" class="card-img-top" alt="{{ product.name }}">
                                     </div>
                                 {% endif %}
                                 <div class="card-body d-flex flex-column">
@@ -127,7 +135,7 @@
                                         {% if product.stock_quantity > 0 %}
                                             <span class="badge text-bg-success">In Stock ({{ product.stock_quantity }})</span>
                                         {% else %}
-                                            <span class="badge text-bg-danger">Out of Stock</span>
+                                            <span class="badge text-bg-danger">Stocked</span>
                                         {% endif %}
                                     </p>
                                     <button class="btn btn-sm btn-primary" 
