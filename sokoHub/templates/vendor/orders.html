@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Dashboard Container */
+    .vendor-dashboard {
+        padding: 2rem 0;
+        min-height: 80vh;
+        background-color: #f9fafb;
+    }
+
+    /* Card Styling */
+    .dashboard-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid var(--bs-light-gray);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .card-header-custom {
+        background-color: white;
+        padding: 20px 25px;
+        border-bottom: 1px solid var(--bs-light-gray);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .dashboard-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--bs-dark);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Table Styling */
+    .table-responsive {
+        margin-bottom: 0;
+    }
+
+    .custom-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .custom-table thead {
+        background-color: #f3f4f6; /* Light gray background for header */
+        color: #4b5563;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .custom-table th {
+        padding: 16px 24px;
+        font-weight: 600;
+        text-align: left;
+    }
+
+    .custom-table td {
+        padding: 16px 24px;
+        border-bottom: 1px solid #e5e7eb;
+        vertical-align: middle;
+        color: var(--bs-dark);
+    }
+
+    .custom-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .custom-table tr:hover {
+        background-color: #fafafa;
+    }
+
+    /* Product Name Highlight */
+    .product-name {
+        font-weight: 600;
+        color: var(--bs-primary); /* Indigo */
+    }
+
+    /* Status Badges */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    /* Pending = Amber */
+    .status-pending {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: var(--bs-secondary); 
+        border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    /* Completed = Green (Hardcoded for success) */
+    .status-completed {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #059669;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+    }
+    .empty-icon {
+        font-size: 3rem;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+    }
+</style>
+
+<div class="vendor-dashboard">
+    <div class="container">
+        
+        <div class="dashboard-card">
+            <div class="card-header-custom">
+                <h1 class="dashboard-title">
+                    <i class="ph ph-storefront" style="color: var(--bs-primary);"></i>
+                    Incoming Orders
+                </h1>
+                <div class="badge bg-dark text-white p-2">
+                    Total Items: {{ order_items.count }}
+                </div>
+            </div>
+
+            <div class="card-body p-0">
+                {% if orders %}
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th><i class="ph ph-hash"></i> Order</th>
+                                <th><i class="ph ph-package"></i> Product</th>
+                                <th class="text-center">Qty</th>
+                                <th><i class="ph ph-user"></i> Customer</th>
+                                <th><i class="ph ph-map-pin"></i> Address</th>
+                                <th><i class="ph ph-calendar"></i> Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in orders %}
+                            <tr>
+                                <td class="font-monospace">
+                                    #{{ item.id }}
+                                </td>
+                                
+                                <td>
+                                    <div class="product-name">{{ item.name }}</div>
+                                    <small class="text-muted">Unit: ${{ item.total }}</small>
+                                </td>
+
+                                <td class="text-center fw-bold">
+                                    {{ item.quantity }}
+                                </td>
+
+                                <td>
+                                    <div class="fw-bold">{{ item.username }}</div>
+                                    <small class="text-muted"><i class="ph ph-phone"></i> {{ item.phone }}</small>
+                                </td>
+
+                                <td>
+                                    <small class="d-block text-truncate" style="max-width: 200px;" title="{{ item.order.address }}">
+                                        {{ item.delivery_address }}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    {{ item.created_at|date:"M d, Y" }}
+                                </td>
+
+                                <td>
+                                    <span class="status-badge status-{{ item.order.status|lower }}">
+                                        {% if item.status == 'pending' %}
+                                            <i class="ph ph-hourglass"></i>
+                                        {% elif item.status == 'completed' %}
+                                            <i class="ph ph-check-circle"></i>
+                                        {% endif %}
+                                        {{ item.get_status_display }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <i class="ph ph-tray empty-icon"></i>
+                    <h3>No orders yet</h3>
+                    <p class="text-muted">When customers purchase your products, they will appear here.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

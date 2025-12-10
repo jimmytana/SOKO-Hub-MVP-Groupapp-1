@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .error-container {
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+</style>
+<div class="container error-container">
+    <h1 class="display-1 fw-bold" style="color: var(--bs-primary);">404</h1>
+    <h2 class="fw-semibold mb-3" style="color: var(--bs-dark);">Page Not Found</h2>
+    <p class="lead text-muted mb-4">Sorry, the page you are looking for does not exist or has been moved.</p>
+    <a href="{% url 'homepage' %}" class="btn btn-lg text-white px-4" style="background-color: var(--bs-secondary);">Go to Homepage</a>
+</div>
+
+{% endblock %}
