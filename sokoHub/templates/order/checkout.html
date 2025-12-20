@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Scoped styles using your base variables */
+    .checkout-container {
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    
+    .section-title {
+        color: var(--bs-dark);
+        border-bottom: 2px solid var(--bs-secondary); /* Amber underline */
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .order-card {
+        background-color: white;
+        border: 1px solid var(--bs-light-gray);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+
+    .order-header {
+        background-color: var(--bs-light-gray);
+        padding: 15px;
+        border-bottom: 1px solid #e5e7eb;
+        font-weight: bold;
+        color: var(--bs-dark);
+    }
+
+    .order-body {
+        padding: 20px;
+    }
+
+    .total-line {
+        border-top: 2px dashed var(--bs-light-gray);
+        margin-top: 15px;
+        padding-top: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: var(--bs-primary); /* Indigo */
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn-place-order {
+        background-color: var(--bs-primary);
+        color: white;
+        width: 100%;
+        padding: 12px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 6px;
+        transition: background-color 0.3s;
+    }
+
+    .btn-place-order:hover {
+        background-color: #5f3dc4; /* Slightly darker indigo */
+    }
+
+    .form-label {
+        color: var(--bs-dark);
+        font-weight: 500;
+    }
+    
+    .form-control {
+        max-width: 300px;
+    }
+    
+    .form-control:focus {
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.25rem rgba(117, 79, 224, 0.25);
+    }
+</style>
+
+<div class="container checkout-container">
+    <div class="row">
+        <div class="col-md-8 mb-4">
+            <h2 class="section-title">Shipping Details </h2>
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                Please correct the errors below.
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{% url 'placeOrder' %}" id="checkout-form">
+                {% csrf_token %}
+                
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                
+                <div class="card order-card">
+                    <div class="order-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="{{ form.address }}" class="form-label">Delivery Address </label>
+                                <input type="text" name="address" value="{{ form.address }}" class="form-control" id=""> 
+                                {% if form.address.errors %}
+                                    <div class="text-danger small">{{ form.address.errors }}</div>
+                                {% endif %}
+                                <small class="text-muted">We pre-filled this based on your profile.</small>
+                            </div>
+
+
+                            <input type="hidden" name="price" value="{{ form.price }}" id="">
+
+                            <div class="col-12">
+                                <label for="{{ form.phone }}" class="form-label">Phone Number </label>
+                                <input type="text" name="phone" value="{{ form.phone }}" class="form-control" id="">
+                                {% if form.phone.errors %}
+                                    <div class="text-danger small">{{ form.phone.errors }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="{{ email }}" class="form-label">Email addres </label>
+                                <input type="text" name="email" class="form-control" value="{{ customer.email }}" id="">
+                                {% if form.phone.errors %}
+                                    <div class="text-danger small">{{ form.phone.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <label for="id_quantity" class="form-label">Quantity</label>
+                                <input type="number" name="quantity" id="id_quantity" class="form-control" value="{{ form.quantity }}" min="1" max="{{ product.stock }}">
+                            </div>
+                            <input type="number" hidden name="total" value="{{ form.sub_total }}" id="">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4">
+            <h2 class="section-title">Order Summary</h2>
+            
+            <div class="card order-card">
+                <div class="order-header">
+                    Details
+                </div>
+                <div class="order-body">
+                    <div class="d-flex mb-3">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: cover; margin-right: 10px;">
+                        {% else %}
+                            <div style="width: 60px; height: 60px; background-color: var(--bs-light-gray); margin-right: 10px;" class="rounded d-flex align-items-center justify-content-center">IMG</div>
+                        {% endif %}
+                        
+                        <div>
+                            <h6 class="mb-0" style="color: var(--bs-dark);">{{ form.product_name }}</h6>
+                            <small class="text-muted">Unit Price: ${{ form.price }}</small>
+                            
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Quantity</span>
+                        <span id="summary-qty">{{ form.quantity }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal</span>
+                        <span id="summary-total">${{ form.sub_total }}</span>
+                    </div>
+
+                    <div class="total-line">
+                        <span>Total</span>
+                        <span id="final-total">${{ form.sub_total }}</span>
+                
+                    </div>
+
+                    <button type="submit" form="checkout-form" class="btn btn-place-order mt-4">
+                        Place Order
+                    </button>
+                    
+                    <div class="text-center mt-2">
+                        <small class="text-muted">Stock Remaining: {{ product.stock }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const price = {{ product.price|default:"0" }};
+    const qtyInput = document.getElementById('id_quantity');
+    const summaryQty = document.getElementById('summary-qty');
+    const summaryTotal = document.getElementById('summary-total');
+    const finalTotal = document.getElementById('final-total');
+
+    if(qtyInput) {
+        qtyInput.addEventListener('change', function() {
+            const q = this.value;
+            const total = (q * price).toFixed(2);
+            
+            summaryQty.innerText = q;
+            summaryTotal.innerText = '$' + total;
+            finalTotal.innerText = '$' + total;
+        });
+    }
+</script>
+{% endblock %}
