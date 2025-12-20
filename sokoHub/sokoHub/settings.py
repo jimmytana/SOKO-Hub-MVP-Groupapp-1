@@ -137,3 +137,8 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'homepage'
 LOGOUT_REDIRECT_URL = 'homepage'
+
+#stripe settings 
+STRIPE_SECRET_KEY = "sk_test_..."
+STRIPE_PUBLISHABLE_KEY = "pk_test_..."
+STRIPE_WEBHOOK_SECRET = "whsec_..."
