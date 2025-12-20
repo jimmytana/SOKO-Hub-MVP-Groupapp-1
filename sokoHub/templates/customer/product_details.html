@@ -1,105 +1,61 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block custom_css %}
-    {{ block.super }}
-    <style>
-        :root {
-            --bs-indigo: #754fe0;
-            --bs-amber: #f59e0b;
-            --bs-dark-gray: #1f2937;
-            --bs-light-gray: #f3f4f6;
-            --bs-primary: var(--bs-indigo);
-            --bs-secondary: var(--bs-amber);
-            --bs-dark: var(--bs-dark-gray);
-            --bs-light: var(--bs-light-gray);
-        }
-
-        .btn-primary {
-            --bs-btn-bg: var(--bs-primary);
-            --bs-btn-border-color: var(--bs-primary);
-            --bs-btn-hover-bg: #6340c4;
-            --bs-btn-hover-border-color: #6340c4;
-        }
-
-        .product-image-large {
-            max-height: 500px;
-            width: 100%;
-            object-fit: contain;
-            background-color: var(--bs-light);
-            border: 1px solid #e9ecef;
-        }
-
-        .product-image-placeholder {
-            height: 400px;
-            background-color: #dee2e6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--bs-dark-gray);
-            font-weight: bold;
-        }
-    </style>
-{% endblock custom_css %}
-
 {% block content %}
 
-    <div class="container my-5">
-        <a href="{% url 'allProducts' %}" class="btn btn-outline-secondary btn-sm mb-4">
+    <div class="container mx-auto my-12 px-4">
+        <a href="{% url 'allProducts' %}" class="inline-flex items-center px-3 py-1 text-sm text-gray-600 bg-white border border-gray-300 rounded hover:bg-gray-50 mb-6">
             &larr; Back to Products
         </a>
 
-        <div class="row">
+        <div class="flex flex-col lg:flex-row gap-8">
             
-            <div class="col-lg-6 mb-4" style="max-height: 350px;overflow: hidden;display: flex;justify-content: center; align-items: center;">
+            <div class="lg:w-1/2 flex justify-center items-center bg-gray-50 rounded-lg overflow-hidden shadow-sm" style="max-height: 500px;">
                 {% if product.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="height: 100%" class="img-fluid rounded product-image-large shadow-sm">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-full w-auto object-contain max-h-[500px]">
                 {% else %}
-                    <div class="product-image-placeholder rounded shadow-sm">
+                    <div class="h-[400px] w-full flex items-center justify-center bg-gray-200 text-gray-500 font-bold">
                         Large Product Image
                     </div>
                 {% endif %}
             </div>
 
-            <div class="col-lg-6">
+            <div class="lg:w-1/2">
                 
-                <h1 class="display-5 fw-bold mb-3" style="color: var(--bs-dark);">
+                <h1 class="text-4xl font-bold mb-4 text-gray-900">
                     {{ product.name }}
                 </h1>
                 
-                <p class="lead text-muted mb-4">
+                <p class="text-lg text-gray-500 mb-6">
                     Sold by: 
-                    <a href="{% url 'allProducts' %}" class="fw-semibold text-decoration-none" style="color: var(--bs-primary);">
+                    <a href="{% url 'allProducts' %}" class="font-semibold text-primary hover:underline">
                         {{ product.vendor_name }}
                     </a>
                 </p>
 
-                <p class="fs-1 fw-bolder mb-3" style="color: var(--bs-secondary);">
+                <p class="text-3xl font-bold mb-4 text-secondary">
                     ${{ product.price|floatformat:2 }}
                 </p>
 
-                <div class="mb-4">
+                <div class="mb-6">
                     {% if product.stock_quantity > 0 %}
-                        <span class="badge fs-6 text-bg-success py-2 px-3">
+                        <span class="inline-block bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
                              In Stock ({{ product.stock_quantity }} Available)
                         </span>
                         {% with is_in_stock=True %} {% endwith %}
                     {% else %}
-                        {% comment %} <span class="badge fs-6 text-bg-danger py-2 px-3">
-                             
-                        </span> {% endcomment %}
                         {% with is_in_stock=False %} {% endwith %}
                     {% endif %}
                 </div>
 
-                <hr>
+                <hr class="border-gray-200 my-6">
 
                 <form action="{% url 'checkout' %}" method="POST" class="mt-4"> 
                     {% csrf_token %}
-                    <div class="d-flex align-items-center mb-4">
+                    <div class="flex items-center mb-6">
                         
-                        <label for="quantity" class="form-label me-3 fw-semibold">Quantity:</label>
-                        <select class="form-select w-auto" id="quantity" name="quantity" 
+                        <label for="quantity" class="mr-4 font-semibold text-gray-700">Quantity:</label>
+                        <select class="form-select block w-24 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md border" id="quantity" name="quantity" 
                             {% if not product.stock %}disabled{% endif %}>
                             {% for i in "x"|ljust:product.stock %}
                                 {% if forloop.counter <= 10 %}
@@ -112,7 +68,7 @@
                     </div>
                     <input type="hidden" name="price" value="{{ product.price }}">
                     <input type="hidden" name="product_id" value="{{ product.pk }}">
-                    <button type="submit" class="btn btn-primary btn-lg w-100 py-3" 
+                    <button type="submit" class="w-full bg-primary text-white text-lg font-bold py-3 rounded-lg shadow hover:bg-opacity-90 transition disabled:opacity-50 disabled:cursor-not-allowed" 
                         {% if not product.stock %}disabled{% endif %}>
                         Buy Now (Proceed to Checkout)
                     </button>
@@ -122,13 +78,13 @@
             </div>
         </div>
 
-        <hr class="my-5">
+        <hr class="my-12 border-gray-200">
 
-        <div class="row">
-            <div class="col-12">
-                <h2 class="fw-bold mb-3" style="color: var(--bs-dark);">Product Description</h2>
-                <div class="card card-body shadow-sm">
-                    <p class="text-break">
+        <div class="grid grid-cols-1">
+            <div class="col-span-1">
+                <h2 class="text-2xl font-bold mb-4 text-gray-900">Product Description</h2>
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <p class="break-words text-gray-700 leading-relaxed">
                         {{ product.description|linebreaksbr }}
                     </p>
                 </div>

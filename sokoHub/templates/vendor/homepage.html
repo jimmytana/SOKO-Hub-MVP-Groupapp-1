@@ -2,39 +2,42 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="text-center mb-5">
-        <h1 class="fw-bold mb-2" style="color: var(--bs-primary);">{{ site_name }}</h1>
-        <p class="lead text-muted">{{ tagline }}</p>
-        <a href="{% url 'allProducts' %}" class="btn btn-lg text-white mt-3 px-4" style="background-color: var(--bs-secondary);">
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16 max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-primary">{{ site_name }}</h1>
+        <p class="text-xl text-gray-500 mb-8">{{ tagline }}</p>
+        <a href="{% url 'allProducts' %}" class="inline-flex items-center px-8 py-3 border border-transparent text-lg font-medium rounded-full text-white bg-secondary hover:bg-opacity-90 transition shadow-lg hover:shadow-xl transform hover:-translate-y-1">
             Browse Products
         </a>
     </div>
-    <h3 class="fw-semibold mb-4" style="color: var(--bs-dark);">Newest Products</h3>
+    
+    <div class="mb-8 border-b border-gray-200 pb-4">
+        <h3 class="text-2xl font-bold text-gray-900">Newest Products</h3>
+    </div>
 
-    <div class="row g-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for product in newest_products %}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card h-100 shadow-sm" style="background-color: var(--bs-light); color: var(--bs-dark);">
-                {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                {% else %}
-                <div class="d-flex align-items-center justify-content-center bg-secondary text-white" style="height: 180px;">No Image</div>
-                {% endif %}
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col h-full border border-gray-100 hover:shadow-lg transition-all duration-300">
+            {% if product.image %}
+            <div class="h-48 overflow-hidden bg-gray-100 flex items-center justify-center">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-full w-full object-cover transition-transform duration-500 hover:scale-105">
+            </div>
+            {% else %}
+            <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-400 font-semibold uppercase tracking-wider">No Image</div>
+            {% endif %}
 
-                <div class="card-body">
-                    <h5 class="fw-bold mb-1">{{ product.name }}</h5>
-                    <p class="mb-1">Price: {{ product.price }}</p>
-                    <p class="text-muted small">Vendor: {{ product.vendor.name }}</p>
-                </div>
+            <div class="p-4 flex-grow flex flex-col">
+                <h5 class="text-lg font-bold text-gray-900 mb-1 line-clamp-1">{{ product.name }}</h5>
+                <p class="text-secondary font-bold text-lg mb-1">Price: {{ product.price }}</p>
+                <p class="text-sm text-gray-500 mb-3">Vendor: <span class="font-medium text-gray-700">{{ product.vendor.name }}</span></p>
+            </div>
 
-                <div class="card-footer bg-transparent border-0">
-                    <a href="{% url 'product_detail' product.id %}" class="btn btn-sm text-white w-100" style="background-color: var(--bs-primary);">View Details</a>
-                </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-100 mt-auto">
+                <a href="{% url 'product_detail' product.id %}" class="block w-full text-center px-4 py-2 bg-primary text-white text-sm font-semibold rounded hover:bg-opacity-90 transition">View Details</a>
             </div>
         </div>
         {% empty %}
-        <p class="text-muted">No products available.</p>
+        <p class="text-gray-500 col-span-full text-center py-8 text-lg">No products available.</p>
         {% endfor %}
     </div>
 </div>

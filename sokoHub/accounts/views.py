@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-from django.shortcuts import render
-from django.http import response
-from django.shortcuts import render
-from functools import wraps
-from django.shortcuts import HttpResponse
-=======
 from accounts.models import CustomUser
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
@@ -13,11 +6,9 @@ from functools import wraps
 from django.http import HttpResponse
 from products.models import Product
 from orders.models import OrderItem, Order
->>>>>>> 52ccd12724bef1d2e94201d4145ecc697fe91e40
-# Create your views here.
 
 def getUserType(request):
-    print(request.user.customuser)
+    # print(request.user.customuser)
     return HttpResponse("User:", request.user.customuser)
 
 def productList(request):
@@ -44,20 +35,6 @@ def vendor_view(request):
     return HttpResponse("This one is protected")
 
 def register(request):
-<<<<<<< HEAD
-    return render(request, '../templates/registration.html')
-
-def vendor_required(function):
-    @wraps(function)
-    def wrapper(request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return HttpResponse("None")
-        return wrapper(request, *args, **kwargs)
-    
-@vendor_required
-def admin(request):
-    return HttpResponse("This one is protected")
-=======
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
         password = request.POST.get('password', '').strip()
@@ -144,7 +121,7 @@ def dashboard(request):
 ).distinct().count()
 
     context = {
-        'order_items': order_items, # You already had this
+        'order_items': order_items, 
         'total_products': total_products,
         'active_products': active_products,
         'out_of_stock': out_of_stock,
@@ -163,4 +140,3 @@ def get_user_type(user):
         return custom_user.user_type
     except CustomUser.DoesNotExist:
         return None
->>>>>>> 52ccd12724bef1d2e94201d4145ecc697fe91e40

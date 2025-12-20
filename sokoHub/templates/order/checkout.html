@@ -2,87 +2,20 @@
 {% load static %}
 
 {% block content %}
-<style>
-    /* Scoped styles using your base variables */
-    .checkout-container {
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-    }
-    
-    .section-title {
-        color: var(--bs-dark);
-        border-bottom: 2px solid var(--bs-secondary); /* Amber underline */
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-    }
 
-    .order-card {
-        background-color: white;
-        border: 1px solid var(--bs-light-gray);
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    }
-
-    .order-header {
-        background-color: var(--bs-light-gray);
-        padding: 15px;
-        border-bottom: 1px solid #e5e7eb;
-        font-weight: bold;
-        color: var(--bs-dark);
-    }
-
-    .order-body {
-        padding: 20px;
-    }
-
-    .total-line {
-        border-top: 2px dashed var(--bs-light-gray);
-        margin-top: 15px;
-        padding-top: 15px;
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: var(--bs-primary); /* Indigo */
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .btn-place-order {
-        background-color: var(--bs-primary);
-        color: white;
-        width: 100%;
-        padding: 12px;
-        font-size: 1.1rem;
-        border: none;
-        border-radius: 6px;
-        transition: background-color 0.3s;
-    }
-
-    .btn-place-order:hover {
-        background-color: #5f3dc4; /* Slightly darker indigo */
-    }
-
-    .form-label {
-        color: var(--bs-dark);
-        font-weight: 500;
-    }
-    
-    .form-control {
-        max-width: 300px;
-    }
-    
-    .form-control:focus {
-        border-color: var(--bs-primary);
-        box-shadow: 0 0 0 0.25rem rgba(117, 79, 224, 0.25);
-    }
-</style>
-
-<div class="container checkout-container">
-    <div class="row">
-        <div class="col-md-8 mb-4">
-            <h2 class="section-title">Shipping Details </h2>
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+        <div class="lg:w-2/3">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-secondary pb-2 mb-5">Shipping Details </h2>
             {% if form.errors %}
-            <div class="alert alert-danger">
-                Please correct the errors below.
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">
+                            Please correct the errors below.
+                        </p>
+                    </div>
+                </div>
             </div>
             {% endif %}
 
@@ -91,39 +24,46 @@
                 
                 <input type="hidden" name="product_id" value="{{ product.id }}">
                 
-                <div class="card order-card">
-                    <div class="order-body">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label for="{{ form.address }}" class="form-label">Delivery Address </label>
-                                <input type="text" name="address" value="{{ form.address }}" class="form-control" id=""> 
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-6">
+                                <label for="{{ form.address }}" class="block text-sm font-medium text-gray-700">Delivery Address </label>
+                                <div class="mt-1">
+                                    <input type="text" name="address" value="{{ form.address }}" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-2 border" id=""> 
+                                </div>
                                 {% if form.address.errors %}
-                                    <div class="text-danger small">{{ form.address.errors }}</div>
+                                    <p class="mt-2 text-sm text-red-600">{{ form.address.errors }}</p>
                                 {% endif %}
-                                <small class="text-muted">We pre-filled this based on your profile.</small>
+                                <p class="mt-2 text-sm text-gray-500">We pre-filled this based on your profile.</p>
                             </div>
-
 
                             <input type="hidden" name="price" value="{{ form.price }}" id="">
 
-                            <div class="col-12">
-                                <label for="{{ form.phone }}" class="form-label">Phone Number </label>
-                                <input type="text" name="phone" value="{{ form.phone }}" class="form-control" id="">
+                            <div class="sm:col-span-6">
+                                <label for="{{ form.phone }}" class="block text-sm font-medium text-gray-700">Phone Number </label>
+                                <div class="mt-1">
+                                    <input type="text" name="phone" value="{{ form.phone }}" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-2 border" id="">
+                                </div>
                                 {% if form.phone.errors %}
-                                    <div class="text-danger small">{{ form.phone.errors }}</div>
+                                    <p class="mt-2 text-sm text-red-600">{{ form.phone.errors }}</p>
                                 {% endif %}
                             </div>
-                            <div class="col-12">
-                                <label for="{{ email }}" class="form-label">Email addres </label>
-                                <input type="text" name="email" class="form-control" value="{{ customer.email }}" id="">
+                            <div class="sm:col-span-6">
+                                <label for="{{ email }}" class="block text-sm font-medium text-gray-700">Email addres </label>
+                                <div class="mt-1">
+                                    <input type="text" name="email" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-2 border bg-gray-50" value="{{ customer.email }}" id="" readonly>
+                                </div>
                                 {% if form.phone.errors %}
-                                    <div class="text-danger small">{{ form.phone.errors }}</div>
+                                    <p class="mt-2 text-sm text-red-600">{{ form.phone.errors }}</p>
                                 {% endif %}
                             </div>
                             
-                            <div class="col-md-4">
-                                <label for="id_quantity" class="form-label">Quantity</label>
-                                <input type="number" name="quantity" id="id_quantity" class="form-control" value="{{ form.quantity }}" min="1" max="{{ product.stock }}">
+                            <div class="sm:col-span-2">
+                                <label for="id_quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                                <div class="mt-1">
+                                    <input type="number" name="quantity" id="id_quantity" class="block w-full border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary sm:text-sm p-2 border" value="{{ form.quantity }}" min="1" max="{{ product.stock }}">
+                                </div>
                             </div>
                             <input type="number" hidden name="total" value="{{ form.sub_total }}" id="">
                         </div>
@@ -132,49 +72,49 @@
             </form>
         </div>
 
-        <div class="col-md-4">
-            <h2 class="section-title">Order Summary</h2>
+        <div class="lg:w-1/3">
+            <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-secondary pb-2 mb-5">Order Summary</h2>
             
-            <div class="card order-card">
-                <div class="order-header">
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                <div class="bg-gray-50 px-4 py-3 border-b border-gray-200 font-bold text-gray-900">
                     Details
                 </div>
-                <div class="order-body">
-                    <div class="d-flex mb-3">
+                <div class="p-5">
+                    <div class="flex mb-4">
                         {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded" style="width: 60px; height: 60px; object-fit: cover; margin-right: 10px;">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-16 w-16 object-cover rounded mr-3">
                         {% else %}
-                            <div style="width: 60px; height: 60px; background-color: var(--bs-light-gray); margin-right: 10px;" class="rounded d-flex align-items-center justify-content-center">IMG</div>
+                            <div class="h-16 w-16 bg-gray-200 rounded mr-3 flex items-center justify-center text-xs font-bold text-gray-500">IMG</div>
                         {% endif %}
                         
                         <div>
-                            <h6 class="mb-0" style="color: var(--bs-dark);">{{ form.product_name }}</h6>
-                            <small class="text-muted">Unit Price: ${{ form.price }}</small>
+                            <h6 class="text-sm font-semibold text-gray-900 mb-1">{{ form.product_name }}</h6>
+                            <p class="text-xs text-gray-500">Unit Price: ${{ form.price }}</p>
                             
                         </div>
                     </div>
 
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="flex justify-between mb-2 text-sm text-gray-600">
                         <span>Quantity</span>
-                        <span id="summary-qty">{{ form.quantity }}</span>
+                        <span id="summary-qty" class="font-medium text-gray-900">{{ form.quantity }}</span>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
+                    <div class="flex justify-between mb-2 text-sm text-gray-600">
                         <span>Subtotal</span>
-                        <span id="summary-total">${{ form.sub_total }}</span>
+                        <span id="summary-total" class="font-medium text-gray-900">${{ form.sub_total }}</span>
                     </div>
 
-                    <div class="total-line">
+                    <div class="border-t-2 border-dashed border-gray-200 mt-4 pt-4 flex justify-between text-lg font-bold text-primary">
                         <span>Total</span>
                         <span id="final-total">${{ form.sub_total }}</span>
                 
                     </div>
 
-                    <button type="submit" form="checkout-form" class="btn btn-place-order mt-4">
+                    <button type="submit" form="checkout-form" class="w-full bg-primary text-white py-3 px-4 rounded-md text-lg font-medium hover:bg-medium-purple transition mt-6 shadow-sm">
                         Place Order
                     </button>
                     
-                    <div class="text-center mt-2">
-                        <small class="text-muted">Stock Remaining: {{ product.stock }}</small>
+                    <div class="text-center mt-3">
+                        <small class="text-gray-500">Stock Remaining: {{ product.stock }}</small>
                     </div>
                 </div>
             </div>

@@ -2,154 +2,43 @@
 {% load static %}
 
 {% block content %}
-<style>
-    .history-container {
-        padding-top: 3rem;
-        padding-bottom: 3rem;
-        min-height: 60vh; /* Ensures footer stays down on empty pages */
-    }
 
-    .page-title {
-        color: var(--bs-dark);
-        border-bottom: 2px solid var(--bs-light-gray);
-        padding-bottom: 15px;
-        margin-bottom: 30px;
-    }
-
-    /* Table Styling */
-    .table-custom {
-        border-collapse: separate; 
-        border-spacing: 0 10px; /* Adds space between rows */
-    }
-
-    .table-custom thead th {
-        border-bottom: none;
-        color: var(--bs-dark);
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        padding: 15px;
-    }
-
-    .table-custom tbody tr {
-        background-color: white;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        transition: transform 0.2s;
-    }
-
-    .table-custom tbody tr:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-    }
-
-    .table-custom td {
-        padding: 20px;
-        vertical-align: middle;
-        border: none;
-    }
-    
-    .table-custom td:first-child {
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-    }
-    
-    .table-custom td:last-child {
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
-
-    /* Status Badge Logic */
-    .badge-status {
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-transform: capitalize;
-    }
-
-    .status-pending {
-        background-color: rgba(245, 158, 11, 0.15); /* Transparent Amber */
-        color: var(--bs-amber);
-        border: 1px solid var(--bs-amber);
-    }
-
-    .status-completed {
-        background-color: rgba(16, 185, 129, 0.15); /* Transparent Green */
-        color: #10b981;
-        border: 1px solid #10b981;
-    }
-
-    .status-cancelled {
-        background-color: rgba(239, 68, 68, 0.15); /* Transparent Red */
-        color: #ef4444;
-    }
-
-    .order-link {
-        color: var(--bs-primary);
-        font-weight: bold;
-        text-decoration: none;
-    }
-    
-    .order-link:hover {
-        text-decoration: underline;
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 60px 20px;
-        background: white;
-        border-radius: 12px;
-        border: 2px dashed var(--bs-light-gray);
-    }
-    
-    .btn-shop {
-        background-color: var(--bs-primary);
-        color: white;
-        padding: 10px 25px;
-        border-radius: 6px;
-        text-decoration: none;
-        transition: background 0.3s;
-    }
-    
-    .btn-shop:hover {
-        background-color: #5f3dc4;
-        color: white;
-    }
-</style>
-<div class="container history-container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="page-title mb-0 border-0 p-0"> My Orders </h2>
+<div class="max-w-7xl mx-auto py-12 px-4 min-h-[60vh]">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 border-b-2 border-gray-200 pb-2"> My Orders </h2>
     </div>
     {% if orders %}
-        <div class="table-responsive">
-            <table class="table table-custom">
-                <thead>
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
                     <tr>
-                        <th>Order #</th>
-                        <th>Date Placed</th>
-                        <th>Status</th>
-                        <th class="text-end">Total</th>
-                        <th class="text-center">Action</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Order #</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Date Placed</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-700 uppercase tracking-wider">Total</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="bg-white divide-y divide-gray-200">
                     {% for order in orders %}
-                    <tr>
-                        <td>
-                            <a href="#" class="order-link">
+                    <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="#" class="text-primary font-bold hover:underline">
                                 #{{ order.id }}
                             </a>
                         </td>
-                        <td>{{ order.created_at|date }}</td>
-                        <td>
-                            <span class="badge-status status-{{ order.status|lower }}">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ order.created_at|date }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-block px-2 py-1 text-xs font-bold rounded-full border 
+                                {% if order.status|lower == 'completed' %} bg-green-50 text-green-700 border-green-200
+                                {% elif order.status|lower == 'cancelled' %} bg-red-50 text-red-700 border-red-200
+                                {% else %} bg-yellow-50 text-yellow-700 border-yellow-200 {% endif %}">
                                 {{ order.get_status_display }}
                             </span>
                         </td>
-                        <td class="text-end fw-bold">${{ order.total }}</td>
-                        <td class="text-center">
-                            <a href="#" class="btn btn-sm btn-outline-secondary">
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-bold text-gray-900">${{ order.total }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            <a href="#" class="inline-flex items-center px-3 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
                                 View Details
                             </a>
                         </td>
@@ -159,13 +48,13 @@
             </table>
         </div>
     {% else %}
-        <div class="empty-state">
-            <div class="mb-3 display-4 text-muted">
+        <div class="text-center py-16 bg-white rounded-xl border-2 border-dashed border-gray-200">
+            <div class="mb-4 text-6xl text-gray-300">
                 <i class="ph ph-cube"></i>
             </div>
-            <h3>No orders yet</h3>
-            <p class="text-muted mb-4">Looks like you haven't placed any orders yet.</p>
-            <a href="{% url 'allProducts' %}" class="btn-shop">
+            <h3 class="text-xl font-medium text-gray-900 mb-2">No orders yet</h3>
+            <p class="text-gray-500 mb-6">Looks like you haven't placed any orders yet.</p>
+            <a href="{% url 'allProducts' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary hover:bg-medium-purple transition">
                 Start Shopping
             </a>
         </div>

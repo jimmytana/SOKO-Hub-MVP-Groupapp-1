@@ -2,76 +2,60 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-4">
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="fw-bold" style="color: var(--bs-primary);">Vendor Dashboard</h2>
-        <a href="{% url 'addProduct' %}" class="btn btn-lg text-white" style="background-color: var(--bs-secondary);">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-2xl font-bold text-primary">Vendor Dashboard</h2>
+        <a href="{% url 'addProduct' %}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-secondary hover:bg-opacity-90 transition">
             Add New Product
         </a>
     </div>
 
-    <div class="row g-4 mb-4">
-        <div class="col-md-3">
-            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-primary);">
-                <div class="card-body">
-                    <h6 class="text-muted">Total Products</h6>
-                    <h3 class="fw-bold">{{ total_products }}</h3>
-                </div>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-lg shadow-sm border-l-4 border-l-primary p-6 border-t border-b border-r border-gray-200">
+            <h6 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Total Products</h6>
+            <h3 class="text-3xl font-bold text-gray-900">{{ total_products }}</h3>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-secondary);">
-                <div class="card-body">
-                    <h6 class="text-muted">Active Products</h6>
-                    <h3 class="fw-bold">{{ active_products }}</h3>
-                </div>
-            </div>
+        <div class="bg-white rounded-lg shadow-sm border-l-4 border-l-secondary p-6 border-t border-b border-r border-gray-200">
+            <h6 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Active Products</h6>
+            <h3 class="text-3xl font-bold text-gray-900">{{ active_products }}</h3>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-dark);">
-                <div class="card-body">
-                    <h6 class="text-muted"></h6>
-                    <h3 class="fw-bold">{{ out_of_stock }}</h3>
-                </div>
-            </div>
+        <div class="bg-white rounded-lg shadow-sm border-l-4 border-l-gray-800 p-6 border-t border-b border-r border-gray-200">
+            <h6 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Out of Stock</h6>
+            <h3 class="text-3xl font-bold text-gray-900">{{ out_of_stock }}</h3>
         </div>
-        <div class="col-md-3">
-            <div class="card shadow-sm" style="border-left: 5px solid var(--bs-primary);">
-                <div class="card-body">
-                    <h6 class="text-muted">Pending Orders</h6>
-                    <h3 class="fw-bold">{{ pending_orders }}</h3>
-                </div>
-            </div>
+        <div class="bg-white rounded-lg shadow-sm border-l-4 border-l-primary p-6 border-t border-b border-r border-gray-200">
+            <h6 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Pending Orders</h6>
+            <h3 class="text-3xl font-bold text-gray-900">{{ pending_orders }}</h3>
         </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-semibold" style="color: var(--bs-dark);">Recent Products</h4>
-        <div>
-            <a href="#" class="btn btn-outline-dark me-2">View All Products</a>
-            <a href="#" class="btn btn-outline-dark">View Orders</a>
+    <div class="flex justify-between items-center mb-6">
+        <h4 class="text-xl font-bold text-gray-900">Recent Products</h4>
+        <div class="flex gap-2">
+            <a href="#" class="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">View All Products</a>
+            <a href="#" class="px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition">View Orders</a>
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {% for product in recent_products %}
-        <div class="col-md-4 col-lg-3">
-            <div class="card h-100 shadow-sm" style="background-color: var(--bs-light);">
-                {% if product.image %}
-                <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-                {% endif %}
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">{{ product.name }}</h5>
-                    <p class="card-text text-muted small">{{ product.description|truncatewords:15 }}</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="btn btn-sm text-white w-100" style="background-color: var(--bs-primary);">Edit</a>
-                </div>
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden flex flex-col h-full border border-gray-100 hover:shadow-md transition-shadow">
+            {% if product.image %}
+            <div class="h-48 bg-gray-200 flex items-center justify-center overflow-hidden">
+                <img src="{{ product.image.url }}" class="h-full w-full object-cover" alt="{{ product.name }}">
+            </div>
+            {% endif %}
+            <div class="p-4 flex-grow">
+                <h5 class="text-lg font-bold text-gray-900 mb-1 truncate">{{ product.name }}</h5>
+                <p class="text-sm text-gray-500 mb-2">{{ product.description|truncatewords:15 }}</p>
+            </div>
+            <div class="p-4 bg-gray-50 border-t border-gray-100 mt-auto">
+                <a href="#" class="block w-full text-center px-4 py-2 bg-primary text-white text-sm font-semibold rounded hover:bg-opacity-90 transition">Edit</a>
             </div>
         </div>
         {% empty %}
-        <p class="text-muted">No products available.</p>
+        <p class="text-gray-500 col-span-full text-center py-8">No products available.</p>
         {% endfor %}
     </div>
 </div>
